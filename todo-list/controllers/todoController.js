@@ -1,36 +1,64 @@
 let todos = [
-  { id: 1, title: "Learn Express", completed: false },
-  { id: 2, title: "Do Homework", completed: true }
+  {
+    id: 1,
+    task: "Learn Express",
+    completed: false,
+    priority: "high",
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: 2,
+    task: "Do homework",
+    completed: true,
+    priority: "medium",
+    createdAt: new Date().toISOString()
+  }
 ];
 
-// GET /todos
+// GET /todo
 export const getAllTodos = (req, res) => {
-  res.status(200).json(todos);
+  res.status(200).json({
+    message: "Todos fetched successfully",
+    todos: todos
+  });
 };
 
-// GET /todos/:id
+// GET /todo/:id
 export const getTodoById = (req, res) => {
-  const id = parseInt(req.params.id);
-  const todo = todos.find(t => t.id === id);
+  const todoId = parseInt(req.params.id);
 
-  if (!todo) {
-    return res.status(404).json({ message: "Todo not found" });
+  const foundTodo = todos.find(todo => todo.id === todoId);
+
+  if (!foundTodo) {
+    return res.status(404).json({
+      error: "Todo not found"
+    });
   }
 
-  res.status(200).json(todo);
+  res.status(200).json({
+    message: "Todo fetched successfully",
+    todo: foundTodo
+  });
 };
 
-// POST /todos
+// POST /todo
 export const createTodo = (req, res) => {
-  const { title, completed } = req.body;
+  const todoData = req.body;
 
-  const newTodo = {
-    id: todos.length + 1,
-    title,
-    completed: completed ?? false
+  // Store (in memory)
+  const storedTodo = {
+    id: Date.now(),
+    task: todoData.task,
+    completed: todoData.completed || false,
+    priority: todoData.priority || "medium",
+    createdAt: new Date().toISOString()
   };
 
-  todos.push(newTodo);
+  todos.push(storedTodo);
 
-  res.status(201).json(newTodo);
+  // Respond
+  res.status(201).json({
+    message: "Todo created successfully",
+    todo: storedTodo
+  });
 };
