@@ -5,7 +5,7 @@
   "main": "alternative.js",
   "type": "module",
   "scripts": {
-    "start": "node ./mini_Api/src/server.js",
+    "start": "todo-list./app.js",
     "dev": "nodemon ./node/app.js"
   },
   "keywords": [],
