@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "alternative.js",
+  "type": "module",
   "scripts": {
-    "start": "node ./node/app.js",
+    "start": "node ./mini_Api/src/server.js",
     "dev": "nodemon ./node/app.js"
   },
   "keywords": [],
@@ -13,11 +14,11 @@
   "dependencies": {
     "bootstrap": "^5.3.8",
     "express": "^5.2.1",
+    "joi": "^18.0.2",
     "lodash": "^4.17.23",
     "mongoose": "^9.1.5"
   },
   "devDependencies": {
     "nodemon": "^3.1.11"
-  },
-  "types": "module"
+  }
 }
