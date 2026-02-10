@@ -1,6 +1,7 @@
 import express from "express";
 
 const app = express();
+app.use(express.json());
 const PORT = process.env.PORT || 5000;
 
 const mockUsers = [
@@ -44,6 +45,16 @@ app.get("/api/users", (req, res) => {
   return res.send(filteredUsers);
 });
 
+app.post('/api/users',(req, res)=>{
+  console.log(req.body);
+  const {body} = req;
+ const newId = mockUsers.length > 0 ? mockUsers[mockUsers.length - 1].id + 1 : 1;
+const newUser = { id: newId, ...body };
+
+  mockUsers.push(newUser);
+  return res.status(201).send(newUser);
+})
+
 app.get("/api/users/:id", (req, res) => {
   console.log("PARAMS RECEIVED:", req.params);
 
@@ -69,6 +80,19 @@ app.get("/api/products", (req, res) => {
     { id: 125, name: "bread", price: 20 },
   ]);
 });
+
+app.put("/api/users/:id", (req, res) =>{
+  const {body,params:{id},} = req;
+  const parsedId = parseInt(id);
+   if (isNaN(id)) 
+    return res.status(400).sendStatus(400);
+   const findUserIndex = mockUsers.findIndex((user)=>user.id === parsedId);
+   if(findUserIndex === -1) return res.sendStatus(404);
+
+   mockUsers[findUserIndex] = {id: parsedId, ...body};
+   return res.sendStatus(200);
+
+})
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
