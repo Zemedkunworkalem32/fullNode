@@ -84,7 +84,7 @@ app.get("/api/products", (req, res) => {
 app.put("/api/users/:id", (req, res) =>{
   const {body,params:{id},} = req;
   const parsedId = parseInt(id);
-   if (isNaN(id)) 
+   if (isNaN(parsedId)) 
     return res.status(400).sendStatus(400);
    const findUserIndex = mockUsers.findIndex((user)=>user.id === parsedId);
    if(findUserIndex === -1) return res.sendStatus(404);
@@ -92,7 +92,31 @@ app.put("/api/users/:id", (req, res) =>{
    mockUsers[findUserIndex] = {id: parsedId, ...body};
    return res.sendStatus(200);
 
-})
+});
+
+app.patch("/api/users/:id", (req, res) =>{
+  const {body,params:{id},} = req;
+  const parsedId = parseInt(id);
+   if (isNaN(parsedId)) 
+    return res.status(400).sendStatus(400);
+   const findUserIndex = mockUsers.findIndex((user)=>user.id === parsedId);
+   if(findUserIndex === -1) return res.sendStatus(404);
+   mockUsers[findUserIndex] = {...mockUsers[findUserIndex], ...body};
+   return res.sendStatus(200);
+
+});
+
+app.delete("/api/users/:id", (req, res) =>{
+  const {params:{id}} = req;
+  const parsedId = parseInt(id);
+   if (isNaN(parsedId)) 
+    return res.status(400).sendStatus(400);
+   const findUserIndex = mockUsers.findIndex((user)=>user.id === parsedId);
+   if(findUserIndex === -1) return res.sendStatus(404);
+   mockUsers.splice(findUserIndex,1);
+   return res.sendStatus(200);
+
+});
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
